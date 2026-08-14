@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Add Student</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 30px auto;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label, input {
+      margin: 8px 0;
+    }
+    button {
+      margin-top: 12px;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Add New Student</h2>
+  <form id="studentForm">
+    <label for="name">Student Name:</label>
+    <input type="text" id="name" required>
+
+    <label for="usn">USN:</label>
+    <input type="text" id="usn" required>
+
+    <label for="department">Department:</label>
+    <input type="text" id="department" required>
+
+    <label for="phone">Parent Phone Number:</label>
+    <input type="text" id="phone" required>
+
+    <button type="submit">Add Student</button>
+  </form>
+
+  <p id="response" style="color: green; margin-top: 10px;"></p>
+
+  <script>
+    const form = document.getElementById('studentForm');
+    const response = document.getElementById('response');
+
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      const data = {
+        name: document.getElementById('name').value,
+        usn: document.getElementById('usn').value,
+        department: document.getElementById('department').value,
+        phone: document.getElementById('phone').value,
+      };
+
+      const res = await fetch('/add_student', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      response.textContent = result.message;
+      form.reset();
+    };
+  </script>
+</body>
+</html>

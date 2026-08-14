@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Attendance Report</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="mb-4">Attendance Report</h2>
+    <a href="/" class="btn btn-secondary mb-3">← Back to Home</a>
+
+    <!-- 🔍 Search/Filter Form -->
+    <form class="row mb-4" method="get" action="/attendance_report">
+      <div class="col-md-4">
+        <input type="text" class="form-control" name="usn" placeholder="Enter USN" value="{{ request.args.get('usn', '') }}">
+      </div>
+      <div class="col-md-4">
+        <input type="date" class="form-control" name="date" value="{{ request.args.get('date', '') }}">
+      </div>
+      <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="/attendance_report" class="btn btn-outline-secondary">Reset</a>
+      </div>
+    </form>
+
+    <!-- 📋 Attendance Table -->
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Student ID</th>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Date</th>
+          <th>Login Time</th>
+          <th>Logout Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in attendance_data %}
+        <tr>
+          <td>{{ record[0] }}</td> <!-- USN -->
+          <td>{{ record[1] }}</td> <!-- Name -->
+          <td>{{ record[2] }}</td> <!-- Department -->
+          <td>{{ record[3] }}</td> <!-- Date -->
+          <td>{{ record[4] if record[4] else 'Not scanned' }}</td> <!-- Login Time -->
+          <td>{{ record[5] if record[5] else 'Not scanned' }}</td> <!-- Logout Time -->
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

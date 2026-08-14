@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2 class="mb-4 text-center">📊 ID Attendance using QR Codes</h2>
+<div class="row row-cols-1 row-cols-md-2 g-4">
+
+  <div class="col">
+    <div class="card shadow h-100 text-center">
+      <div class="card-body">
+        <h5 class="card-title">➕ Add Student</h5>
+        <p class="card-text">Register new students and generate QR codes.</p>
+        <a href="/add_student_form" class="btn btn-primary">Go</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card shadow h-100 text-center">
+      <div class="card-body">
+        <h5 class="card-title">📷 QR Scanner</h5>
+        <p class="card-text">Scan QR codes to mark attendance.</p>
+        <a href="/webcam_test" class="btn btn-success">Scan Now</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card shadow h-100 text-center">
+      <div class="card-body">
+        <h5 class="card-title">🧾 QR Codes</h5>
+        <p class="card-text">View and download student QR codes.</p>
+        <a href="/qrcodes" class="btn btn-secondary">View QR Codes</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="card shadow h-100 text-center">
+      <div class="card-body">
+        <h5 class="card-title">📈 Attendance Report</h5>
+        <p class="card-text">Generate and view attendance reports.</p>
+        <a href="/attendance_report" class="btn btn-warning">View Report</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

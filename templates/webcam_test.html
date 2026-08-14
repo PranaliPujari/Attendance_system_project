@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Scan Student QR Code</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    #reader {
+      width: 400px;
+      margin: 20px auto;
+    }
+    h2 {
+      text-align: center;
+      font-family: sans-serif;
+    }
+    #result {
+      text-align: center;
+      font-family: sans-serif;
+      font-weight: bold;
+      color: green;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Scan Student QR Code</h2>
+  <div id="reader"></div>
+  <p id="result"></p>
+
+  <script>
+    let lastScannedUSN = '';
+    let lastScanTime = 0;
+
+    function onScanSuccess(decodedText, decodedResult) {
+      const now = Date.now();
+
+      // Prevent duplicate scans of same QR within 5 seconds
+      if (decodedText === lastScannedUSN && now - lastScanTime < 5000) {
+        return;
+      }
+
+      lastScannedUSN = decodedText;
+      lastScanTime = now;
+
+      // Show scanned value briefly
+      document.getElementById('result').innerText = "Processing...";
+
+      fetch('/scan_qr', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ usn: decodedText.trim() })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('result').innerText = data.message;
+      })
+      .catch(err => {
+        console.error('Scan error:', err);
+        document.getElementById('result').innerText = "❌ Error sending scan to server";
+      });
+    }
+
+    function onScanFailure(error) {
+      // Optional: keep quiet or log silently
+      console.warn(`QR Scan failed: ${error}`);
+    }
+
+    const html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 350 });
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+  </script>
+</body>
+</html>
